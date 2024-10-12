@@ -41,5 +41,5 @@ resilience4j:
     instances:
       serviceA:
         max-attempts: 5
-        wait-duration:
-          seconds: 5s
+        wait-duration: 10s
+
