@@ -21,7 +21,7 @@ management:
 resilience4j:
   circuitbreaker:
     instances:
-      serviceA:
+      serviceA: #This name should be matched with the name of the SERVICE_NAME defined in the controller class.
         register-health-indicator: true
         event-consumer-buffer-size: 10 # The size of the event consumer buffer.
         failure-rate-threshold: 50 # This is the threshold after which the circuit breaker will open the circuit and start short-circuiting calls.
@@ -37,4 +37,9 @@ resilience4j:
         #state to the HALF_OPEN state.
         permitted-number-of-calls-in-half-open-state: 3 # The number of permitted calls in the HALF_OPEN state.
 
-
+  retry:
+    instances:
+      serviceA:
+        max-attempts: 5
+        wait-duration:
+          seconds: 5s
