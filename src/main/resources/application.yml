@@ -42,4 +42,13 @@ resilience4j:
       serviceA:
         max-attempts: 5
         wait-duration: 10s
+  ratelimiter:
+    instances:
+      serviceA:
+        register-health-indicator: false
+        limit-for-period: 10 #The number of allowed requests per 10s.
+        limit-refresh-period: 10s #The period of time that the rate limiter will reset the number of requests.
+        timeout-duration: 10s #The time that the rate limiter will wait for the response of the request.
+
+
 
