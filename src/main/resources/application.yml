@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: service-A
+server:
+  port: 8080
+
+#Health check configuration.
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always
+
+#Resilience4j configuration.
+resilience4j:
+  circuitbreaker:
+    instances:
+      serviceA:
+        register-health-indicator: true
+        event-consumer-buffer-size: 10 # The size of the event consumer buffer.
+        failure-rate-threshold: 50 # This is the threshold after which the circuit breaker will open the circuit and start short-circuiting calls.
+        minimum-number-of-calls: 5 # The minimum number of calls that must be made before the circuit breaker can calculate the error rate.
+        #If the first 5 concurrent calls all fail,
+        #the circuit breaker will not open.In order to make it open ,the next 5/10 requests must fail. (Since there is 50% threshold with
+        # 10 sliding window size.)
+        sliding-window-size: 10 # This the number of requests that threshold should be calculated over.
+        sliding-window-type: COUNT_BASED # The type of sliding window that the circuit breaker should use.
+        automatic-transition-from-open-to-half-open-enabled: true # This property allows the circuit breaker to automatically transition
+        #from the OPEN state to the HALF_OPEN state after a delay.
+        wait-duration-in-open-state: 5s # The time that the circuit breaker should wait before transitioning from the OPEN
+        #state to the HALF_OPEN state.
+        permitted-number-of-calls-in-half-open-state: 3 # The number of permitted calls in the HALF_OPEN state.
+
+
